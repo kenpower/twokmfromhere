@@ -113,13 +113,10 @@
 
       marker.addListener('drag', function(event) {
 
-        console.log('event :', event);
-
         var pos = {
           lat: event.latLng.lat(),
           lng: event.latLng.lng()
         };
-        console.log('pos :', pos);
 
         cityCircle.setCenter(pos);
       });
