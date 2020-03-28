@@ -29,6 +29,7 @@
         font-family: Roboto,sans-serif;
         font-weight: 400;
         font-size: 2em;
+        border-radius: 25px;
     }
 
     </style>
@@ -67,14 +68,14 @@
             infoWindow.setContent('You are here. The green circle represents 2km');
             infoWindow.open(map);
             map.setCenter(pos);
-            map.setZoom(14);
+            map.setZoom(13);
 
             var cityCircle = new google.maps.Circle({
                 strokeColor: '#00FF00',
                 strokeOpacity: 0.8,
                 strokeWeight: 2,
                 fillColor: '#00FF00',
-                fillOpacity: 0.25,
+                fillOpacity: 0.15,
                 map: map,
                 center: pos,
                 radius: 2000
