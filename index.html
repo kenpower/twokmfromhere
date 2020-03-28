@@ -68,11 +68,11 @@
 
 <body>
   <div id="map"></div>
-  <div class="popup" id="wait">
+  <!-- <div class="popup" id="wait">
     Finding your location...
     <div class="subtext">Did you click to allow this page to see your location?</div>
 
-  </div>
+  </div> -->
   <div class="credits">
     <p><a href='https://twitter.com/kenpower'>Ken Power,  
       <a href='https://github.com/kenpower/twokmfromhere'>Github repo</a></p>
@@ -88,7 +88,7 @@
     var map, infoWindow;
     function initMap() {
       var geographicCentreOfIreland = { lat: 53.3, lng: -8.0 };
-      var offset = 1.00;
+      var offset = 0.50;
       var bounds = new google.maps.LatLngBounds();
       bounds.extend(new google.maps.LatLng(geographicCentreOfIreland.lat + offset, geographicCentreOfIreland.lng + offset));
       bounds.extend(new google.maps.LatLng(geographicCentreOfIreland.lat - offset, geographicCentreOfIreland.lng - offset));
@@ -99,6 +99,44 @@
 
       infoWindow = new google.maps.InfoWindow;
 
+      infoWindow.setContent('<p>Waiting to get permission to see your location...</p>'+
+        '<div class = "disclaimer">You can still zoom and drag the marker around to see your 2km radius</div> '   
+      );
+          
+      var marker = new google.maps.Marker({
+        position: geographicCentreOfIreland,
+        map: map,
+        draggable:true,
+        });
+
+      infoWindow.open(map, marker);
+
+      marker.addListener('drag', function(event) {
+
+        console.log('event :', event);
+
+        var pos = {
+          lat: event.latLng.lat(),
+          lng: event.latLng.lng()
+        };
+        console.log('pos :', pos);
+
+        cityCircle.setCenter(pos);
+      });
+
+
+
+      var cityCircle = new google.maps.Circle({
+      strokeColor: '#00FF00',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: '#00FF00',
+      fillOpacity: 0.15,
+      map: map,
+      center: geographicCentreOfIreland,
+      radius: 2000
+      });
+
       // Try HTML5 geolocation.
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -107,12 +145,9 @@
             lng: position.coords.longitude
           };
 
-          document.getElementById('wait').style.display = 'none'
-
-          infoWindow.setPosition(pos);
-          infoWindow.setContent('<p>You are here. The green circle represents 2km</p>' +
-            '<div class = "disclaimer">If this location does not look correct, your device probably doesn\'t have GPS</div>');
-          infoWindow.open(map);
+          infoWindow.setContent('<p>You are here. The green circle represents 2km radius</p>' +
+            '<div class = "disclaimer">If this location does not look correct, your device probably doesn\'t have GPS<br/>You can drag the marker to your exact location</div>');
+          
           map.setCenter(pos);
 
           var offset = 0.02;
@@ -121,18 +156,10 @@
           bounds.extend(new google.maps.LatLng(pos.lat - offset, pos.lng - offset));
           map.fitBounds(bounds);
 
-          var cityCircle = new google.maps.Circle({
-            strokeColor: '#00FF00',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#00FF00',
-            fillOpacity: 0.15,
-            map: map,
-            center: pos,
-            radius: 2000
-          });
+          // Place a draggable marker on the map
+          marker.setPosition(pos)
 
-
+          cityCircle.setCenter(pos);
 
         }, function () {
           handleLocationError(true, infoWindow, map.getCenter());
@@ -154,6 +181,7 @@
   <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBo3IBJqhVUpB_rKaoNm0FrPRpuD0V0P_E&callback=initMap">
     </script>
+
 </body>
 
 </html>
