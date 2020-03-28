@@ -47,10 +47,14 @@
       var map, infoWindow;
       function initMap() {
         var geographicCentreOfIreland = {lat: 53.3, lng: -8.0};
+        var offset = 1.00;     
+        var bounds = new google.maps.LatLngBounds();                            
+        bounds.extend(new google.maps.LatLng(geographicCentreOfIreland.lat + offset, geographicCentreOfIreland.lng + offset));
+        bounds.extend(new google.maps.LatLng(geographicCentreOfIreland.lat - offset, geographicCentreOfIreland.lng - offset));
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 8,
           center: geographicCentreOfIreland
         });
+        map.fitBounds(bounds);
 
         infoWindow = new google.maps.InfoWindow;
 
@@ -68,7 +72,12 @@
             infoWindow.setContent('You are here. The green circle represents 2km');
             infoWindow.open(map);
             map.setCenter(pos);
-            map.setZoom(13);
+
+            var offset = 0.02;     
+            var bounds = new google.maps.LatLngBounds();                            
+            bounds.extend(new google.maps.LatLng(pos.lat + offset, pos.lng + offset));
+            bounds.extend(new google.maps.LatLng(pos.lat - offset, pos.lng - offset));
+            map.fitBounds(bounds);
 
             var cityCircle = new google.maps.Circle({
                 strokeColor: '#00FF00',
