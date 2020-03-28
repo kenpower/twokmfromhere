@@ -32,6 +32,10 @@
         border-radius: 25px;
     }
 
+    .disclaimer {
+        font-weight: 400;
+        font-size: 0.75em;
+    }
     </style>
   </head>
   <body>
@@ -69,7 +73,9 @@
             document.getElementById('wait').style.display = 'none' 
 
             infoWindow.setPosition(pos);
-            infoWindow.setContent('You are here. The green circle represents 2km');
+            infoWindow.setContent('<p>You are here. The green circle represents 2km</p>' +
+              '<p> accuracy'+JSON.stringify(position)+ ' '+ position.coords.accuracy+'</p>'+
+              '<div class = "disclaimer">If this location does not look correct, your device probably doesn\'t have GPS</div>');
             infoWindow.open(map);
             map.setCenter(pos);
 
