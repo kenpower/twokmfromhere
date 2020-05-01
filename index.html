@@ -131,7 +131,7 @@
       fillOpacity: 0.15,
       map: map,
       center: geographicCentreOfIreland,
-      radius: 2000
+      radius: 5000
       });
 
       // Try HTML5 geolocation.
@@ -142,7 +142,7 @@
             lng: position.coords.longitude
           };
 
-          infoWindow.setContent('<p>You are here. The green circle represents 2km radius</p>' +
+          infoWindow.setContent('<p>You are here. The green circle represents 5km radius</p>' +
             '<div class = "disclaimer">If this location does not look correct, your device probably doesn\'t have GPS<br/>You can drag the marker to your exact location</div>');
           
           map.setCenter(pos);
